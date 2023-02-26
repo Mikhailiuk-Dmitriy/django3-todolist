@@ -1,6 +1,8 @@
+import os
 from typing import Any
 
 import requests
+from dotenv import load_dotenv
 from django import forms
 from django.contrib.auth import authenticate
 from django.contrib.auth import get_user_model
@@ -25,9 +27,11 @@ from .serializers import TodoSerializer
 
 User = get_user_model()
 
+load_dotenv()
+
 
 def home(request: HttpRequest) -> HttpResponse:
-    key_api = "89c911af936e2ee01a1072e6476ac638"
+    key_api = os.getenv("key_api")
     url = (
         "https://api.openweathermap.org/data/2.5/weather?q={},"
         "by&units=metric&appid=" + key_api
