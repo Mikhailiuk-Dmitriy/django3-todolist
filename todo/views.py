@@ -226,6 +226,16 @@ class TodoAPIList(LoginRequiredMixin, generics.ListCreateAPIView):
         return Todo.objects.filter(user=user)
 
 
+class TodoAPIDetailView(
+    LoginRequiredMixin, generics.RetrieveUpdateDestroyAPIView
+):
+    serializer_class = TodoSerializer
+
+    def get_queryset(self) -> Any:
+        user = self.request.user
+        return Todo.objects.filter(user=user)
+
+
 class TodoCurrentSearchView(LoginRequiredMixin, generic.FormView):
     form_class = forms.Form
     success_url = "/current"
