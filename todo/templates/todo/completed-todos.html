@@ -1,0 +1,46 @@
+{% extends "todo/base.html" %}
+
+{% block content %}
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-10">
+            <h1>Завершенных задач: {{ todos|length }}</h1>
+        </div>
+    </div>
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-10">
+            <div class="list-group">
+                    <form action="{% url 'search_completed' %}" method="post"
+                          style="display: flex; justify-content: center;">
+                        {% csrf_token %}
+                        <input class="form-control" name="search_completed" value="{{search_completed}}"
+                               placeholder="Поиск по задачам" >
+                        <button style="margin-left: 10px" class="btn btn-info"
+                                type="submit">Найти
+                        </button>
+                    </form>
+                </div>
+                <br>
+                <br>
+            <div class="list-group">
+                {% if todos %}
+                {% for todo in todos %}
+                        <div class="card" style="margin-bottom:10px">
+                             <div class="card-header">
+                                 Завершено {{ todo.datecompleted|date:'d F Y H:i' }}
+                             </div>
+                            <a href="{% url 'up_date_todo' todo.id %}" class="list-group-item list-group-item-action{% if todo.important %} list-group-item-danger{% endif %}">
+                            <div class="card-body">
+                                <b>{{ todo.title }}</b>
+                            </div>
+                             </a>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                {% if search_completed is None or search_completed == '' %}
+                     <h2><i>Похоже, у вас нет завершенных задач</i></h2>
+                {% endif %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
