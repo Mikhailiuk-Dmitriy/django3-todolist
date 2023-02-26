@@ -2,7 +2,6 @@ import os
 from typing import Any
 
 import requests
-from dotenv import load_dotenv
 from django import forms
 from django.contrib.auth import authenticate
 from django.contrib.auth import get_user_model
@@ -20,6 +19,7 @@ from django.shortcuts import redirect
 from django.shortcuts import render
 from django.utils import timezone
 from django.views import generic
+from dotenv import load_dotenv
 from rest_framework import generics  # type: ignore
 
 from .models import Todo
@@ -31,13 +31,13 @@ load_dotenv()
 
 
 def home(request: HttpRequest) -> HttpResponse:
-    key_api = os.getenv("key_api")
-    url = (
+    key_api: Any = os.getenv("key_api")
+    url: str = (
         "https://api.openweathermap.org/data/2.5/weather?q={},"
-        "by&units=metric&appid=" + key_api
+        "by&units=metric&appid={}"
     )
-    city = "Минск"
-    res = requests.get(url.format(city)).json()
+    city: str = "Минск"
+    res: Any = requests.get(url.format(city, key_api)).json()
 
     city_info = {
         "city": city,
