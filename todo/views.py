@@ -21,6 +21,7 @@ from django.utils import timezone
 from django.views import generic
 from dotenv import load_dotenv
 from rest_framework import generics  # type: ignore
+from rest_framework.permissions import IsAuthenticated  # type: ignore
 
 from .models import Todo
 from .serializers import TodoSerializer
@@ -222,18 +223,18 @@ def repeat_todo(request: HttpRequest, pk: int) -> Any:
         return redirect("/current")
 
 
-class TodoAPIList(LoginRequiredMixin, generics.ListCreateAPIView):
+class TodoAPIList(generics.ListCreateAPIView):
     serializer_class = TodoSerializer
+    permission_classes = (IsAuthenticated,)
 
     def get_queryset(self) -> Any:
         user = self.request.user
         return Todo.objects.filter(user=user)
 
 
-class TodoAPIDetailView(
-    LoginRequiredMixin, generics.RetrieveUpdateDestroyAPIView
-):
+class TodoAPIDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = TodoSerializer
+    permission_classes = (IsAuthenticated,)
 
     def get_queryset(self) -> Any:
         user = self.request.user

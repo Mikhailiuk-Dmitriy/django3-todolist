@@ -1,5 +1,6 @@
 from django.urls import include
 from django.urls import path
+from django.urls import re_path
 
 from todo import views
 
@@ -9,6 +10,8 @@ urlpatterns = [
     path("api/v1/todolist/", views.TodoAPIList.as_view(), name="api"),
     path("api/v1/todolist/<int:pk>/", views.TodoAPIDetailView.as_view()),
     path("api/v1/drf-auth/", include("rest_framework.urls"), name="auth"),
+    path("api/v1/auth/", include("djoser.urls")),
+    re_path(r"^auth/", include("djoser.urls.authtoken")),
     path("complete/<int:pk>/", views.complete_todo, name="complete_todo"),
     path(
         "completedtodos/",
