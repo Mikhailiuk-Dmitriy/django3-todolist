@@ -21,6 +21,15 @@
             </form>
             </div>
             <br>
+            <div class="container">
+                <ul>
+                    {% for tag in tags %}
+                    <li style="display:inline-block; margin-right: 20px;"><a
+                            href="{% url 'detail_tag' tag.pk %}">#{{ tag }}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
             <br>
             <div class="list-group">
                 {% for todo in todos %}

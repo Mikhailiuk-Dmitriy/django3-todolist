@@ -1,0 +1,21 @@
+{% extends "todo/base.html" %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-5">
+        <h2>Удалить тег: #{{ tag.title }}</h2>
+    </div>
+</div>
+<div class="row justify-content-center mt-5">
+  <div class="col-md-5">
+    <form method="post">
+      {% csrf_token %}
+      <button class="btn btn-success" type="button" onclick="history.back();">
+        Назад
+      </button>
+      <button type="submit" value="confirm" class="btn btn-danger">Удалить тег
+      </button>
+    </form>
+  </div>
+</div>
+{% endblock %}

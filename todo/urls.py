@@ -18,10 +18,20 @@ urlpatterns = [
         views.CompletedTodoList.as_view(),
         name="completed_todos",
     ),
+    path(
+        "control_tags/", views.ControlTagsList.as_view(), name="control_tags"
+    ),
+    path("create_tag/", views.CreateTagView.as_view(), name="create_tag"),
     path("current/", views.CurrentTodosList.as_view(), name="current_todos"),
     path(
         "delete/<int:pk>/", views.DeleteTodoView.as_view(), name="delete_todo"
     ),
+    path(
+        "delete_tag/<int:pk>/",
+        views.DeleteTagView.as_view(),
+        name="delete_tag",
+    ),
+    path("detail_tag/<int:pk>/", views.detail_tag, name="detail_tag"),
     path("login/", views.login_user, name="login_user"),
     path("logout/", views.log_out_user, name="log_out_user"),
     path("repeattodo/<int:pk>/", views.repeat_todo, name="repeat_todo"),
@@ -40,5 +50,10 @@ urlpatterns = [
         "updatetodo/<int:pk>/",
         views.UpDateTodoView.as_view(),
         name="up_date_todo",
+    ),
+    path(
+        "updat_tag/<int:pk>/",
+        views.UpDateTagView.as_view(),
+        name="up_date_tag",
     ),
 ]

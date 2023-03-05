@@ -1,0 +1,30 @@
+{% extends "todo/base.html" %}
+
+{% block content %}
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-10">
+                <h1> #{{ tag }}</h1>
+        </div>
+    </div>
+<div class="row justify-content-center mt-5">
+    <div class="col-md-10">
+       <div class="list-group">
+                {% for todo in todos %}
+                 <div class="card" style="margin-bottom:10px">
+                     <div class="card-header">
+                            {{ todo.created }}
+
+                        </div>
+                        <a href="{% url 'up_date_todo' todo.id %}"
+                   class="list-group-item list-group-item-action{% if todo.important %} list-group-item-danger{% endif %}">
+                        <div class="card-body">
+                           <b>{{ todo.title }}</b>
+                            {% if todo.memo %} - {{ todo.memo|truncatechars:30 }}{% endif %}
+                        </div>
+                        </a>
+                </div>
+                {% endfor %}
+            </div>
+    </div>
+</div>
+{% endblock %}

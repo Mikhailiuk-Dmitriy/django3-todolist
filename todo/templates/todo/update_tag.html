@@ -1,0 +1,28 @@
+{% extends "todo/base.html" %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-5">
+        <h2></h2>
+    </div>
+</div>
+<div class="row justify-content-center mt-5">
+    <div class="col-md-5">
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="title">Изменить тег</label>
+                <input type="text" name="title" class="form-control"
+                       id="id_title" value="{{ form.title.value }}" required>
+            </div>
+            <button class="btn btn-success" type="button"
+                    onclick="history.back();">
+                Назад
+            </button>
+            <button class="btn btn-primary" type="submit">Сохранить</button>
+        </form>
+
+
+    </div>
+</div>
+{% endblock %}

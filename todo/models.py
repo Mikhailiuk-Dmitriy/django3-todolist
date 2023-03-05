@@ -13,6 +13,17 @@ class Todo(models.Model):
     datecompleted: Any = models.DateTimeField(blank=True, null=True)
     important: Any = models.BooleanField(default=False)
     user: Any = models.ForeignKey(User, on_delete=models.CASCADE)
+    tag: Any = models.ManyToManyField("Tag", blank=True)
+
+    def __str__(self) -> str:
+        return f"{self.title}"
+
+
+class Tag(models.Model):
+    title: Any = models.CharField(max_length=50, blank=True, null=True)
+    user: Any = models.ForeignKey(
+        User, blank=True, null=True, on_delete=models.CASCADE
+    )
 
     def __str__(self) -> str:
         return f"{self.title}"

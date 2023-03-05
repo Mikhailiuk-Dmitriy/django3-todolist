@@ -23,6 +23,7 @@ from dotenv import load_dotenv
 from rest_framework import generics  # type: ignore
 from rest_framework.permissions import IsAuthenticated  # type: ignore
 
+from .models import Tag
 from .models import Todo
 from .serializers import TodoSerializer
 
@@ -131,6 +132,7 @@ class CurrentTodosList(LoginRequiredMixin, generic.ListView):
         context = super().get_context_data()
         search = self.request.session.get("search_current")
         context["search_current"] = search if search else ""
+        context["tags"] = Tag.objects.filter(user=self.request.user)
         return context
 
 
@@ -157,19 +159,29 @@ def search_todo(self: Any, qs: Any) -> Any:
 class AddTodoView(LoginRequiredMixin, generic.CreateView):
     template_name = "todo/add-todo.html"
     model = Todo
-    fields = ["title", "memo", "important"]
+    fields = ["title", "memo", "important", "tag"]
     success_url = "/current"
 
     def form_valid(self, form: forms.ModelForm) -> HttpResponse:
         form.instance.user = self.request.user
         return super().form_valid(form)
 
+    def get_queryset(self) -> Any:
+        qs: Any = super().get_queryset()
+        qs = qs.filter(user=self.request.user)
+        return qs
+
 
 class UpDateTodoView(LoginRequiredMixin, generic.UpdateView):
     template_name = "todo/up-date-todo.html"
     model = Todo
-    fields = ["title", "memo", "important"]
+    fields = ["title", "memo", "important", "tag"]
     success_url = "/current"
+
+    def get_queryset(self) -> Any:
+        qs: Any = super().get_queryset()
+        qs = qs.filter(user=self.request.user)
+        return qs
 
 
 class CompletedTodoList(LoginRequiredMixin, generic.ListView):
@@ -215,10 +227,14 @@ def repeat_todo(request: HttpRequest, pk: int) -> Any:
         newtodo.user = request.user
         newtodo.title = request.POST.get("title")
         newtodo.memo = request.POST.get("memo")
+
         if request.POST.get("important") == "on":
             newtodo.important = 1
         elif request.POST.get("important") == "None":
             newtodo.important = 0
+        newtodo.save()
+        newtodo.tag.set(request.POST.get("tag"))
+        print(request.POST.get("tag"))
         newtodo.save()
         return redirect("/current")
 
@@ -259,3 +275,47 @@ class TodoCompletedSearchView(LoginRequiredMixin, generic.FormView):
         search_text = self.request.POST["search_completed"].lower()
         self.request.session["search_completed"] = search_text
         return super().form_valid(form)
+
+
+class ControlTagsList(LoginRequiredMixin, generic.ListView):
+    template_name = "todo/control_tags.html"
+    model = Tag
+    context_object_name = "tags"
+
+    def get_queryset(self) -> Any:
+        qs: Any = super().get_queryset()
+        qs = qs.filter(user=self.request.user)
+        return qs
+
+
+class CreateTagView(LoginRequiredMixin, generic.CreateView):
+    template_name = "todo/create_tag.html"
+    model = Tag
+    fields = ["title"]
+    success_url = "/control_tags"
+
+    def form_valid(self, form: forms.ModelForm) -> HttpResponse:
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+
+class DeleteTagView(LoginRequiredMixin, generic.DeleteView):  # type: ignore
+    template_name = "todo/delete_tag.html"
+    model = Tag
+    success_url = "/control_tags"
+
+
+class UpDateTagView(LoginRequiredMixin, generic.UpdateView):
+    template_name = "todo/update_tag.html"
+    model = Tag
+    fields = ["title"]
+    success_url = "/control_tags"
+
+
+@login_required
+def detail_tag(request: HttpRequest, pk: int) -> Any:
+    tag = Tag.objects.get(pk=pk)
+    todos = Todo.objects.filter(tag=pk, user=request.user)
+    return render(
+        request, "todo/detail_tag.html", {"tag": tag, "todos": todos}
+    )
