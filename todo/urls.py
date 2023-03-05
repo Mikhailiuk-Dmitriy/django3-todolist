@@ -34,7 +34,6 @@ urlpatterns = [
     path("detail_tag/<int:pk>/", views.detail_tag, name="detail_tag"),
     path("login/", views.login_user, name="login_user"),
     path("logout/", views.log_out_user, name="log_out_user"),
-    path("repeattodo/<int:pk>/", views.repeat_todo, name="repeat_todo"),
     path("signup/", views.sign_up_user, name="sign_up_user"),
     path(
         "search_current/",
