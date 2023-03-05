@@ -3,9 +3,10 @@
 {% block content %}
     <div class="row justify-content-center mt-5">
         <div class="col-md-5">
-            <h2>Редактирование задачи</h2>
             {% if todo.datecompleted %}
-                <h6 style="color:red;">Задача завершена</h6>
+                <h3 style="color:red;">Задача завершена</h3>
+            {% else %}
+            <h2>Редактирование задачи</h2>
             {% endif %}
         </div>
     </div>
@@ -16,7 +17,7 @@
                     {{ error }}
                 </div>
             {% endif %}
-            <form method="POST" {% if todo.datecompleted %} action="{% url 'repeat_todo' todo.id %}"{% endif %}>
+            <form method="POST">
                 {% csrf_token %}
                 <div class="form-group">
                     <label for="title">Заголовок</label>
@@ -36,12 +37,12 @@
                         {{form.tag}}
                     <a style="margin-left:10px;" href="{% url 'control_tags' %}">Управление тегами</a>
                 </div>
-
                 {% if todo.datecompleted is None %}
+                    <button type="button" class="btn btn-info" onclick="$('#complete_back').click()">Назад</button>
                     <button type="submit" class="btn btn-primary">Сохранить</button>
                     <button type="button" class="btn btn-success" onclick="$('#complete').click()">Завершить</button>
                 {% else %}
-                    <button type="submit" class="btn btn-primary">Повторить</button>
+                    <button type="button" class="btn btn-info" onclick="$('#delete_back').click()">Назад</button>
                     <button type="button" class="btn btn-danger" onclick="$('#delete').click()">Удалить</button>
                 {% endif %}
             </form>
@@ -56,5 +57,14 @@
            {% csrf_token %}
            <button id="delete" type="submit">Удалить</button>
         </form>
+        <form style='display: none;' action="{% url 'current_todos' %}">
+             {% csrf_token %}
+            <button id="complete_back" type="submit">Назад</button>
+        </form>
+        <form style='display: none;' action="{% url 'completed_todos' %}">
+           {% csrf_token %}
+           <button id="delete_back" type="submit">Назад</button>
+        </form>
+
 
 {% endblock %}

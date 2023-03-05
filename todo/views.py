@@ -218,27 +218,6 @@ class DeleteTodoView(LoginRequiredMixin, generic.DeleteView):  # type: ignore
     success_url = "/completedtodos"
 
 
-@login_required
-def repeat_todo(request: HttpRequest, pk: int) -> Any:
-    todo = get_object_or_404(Todo, pk=pk, user=request.user)
-    if request.method == "POST":
-        todo.delete()
-        newtodo = Todo()
-        newtodo.user = request.user
-        newtodo.title = request.POST.get("title")
-        newtodo.memo = request.POST.get("memo")
-
-        if request.POST.get("important") == "on":
-            newtodo.important = 1
-        elif request.POST.get("important") == "None":
-            newtodo.important = 0
-        newtodo.save()
-        newtodo.tag.set(request.POST.get("tag"))
-        print(request.POST.get("tag"))
-        newtodo.save()
-        return redirect("/current")
-
-
 class TodoAPIList(generics.ListCreateAPIView):
     serializer_class = TodoSerializer
     permission_classes = (IsAuthenticated,)
