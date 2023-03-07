@@ -34,8 +34,18 @@
                 <div class="form-group">
                     <label>Теги</label>
                     <br>
-                        {{form.tag}}
-                    <a style="margin-left:10px;" href="{% url 'control_tags' %}">Управление тегами</a>
+                    <select style="width:250px; padding:5px;" name="tag"
+                            id="id_tag" multiple="">
+                        {% for tag in tags %}
+                                {% if tag in todo.tag.all %}
+                                    <option value="{{ tag.id }}" selected>{{ tag }}</option>
+                                {% else %}
+                                    <option value="{{ tag.id }}">{{ tag }}</option>
+                                {% endif %}
+                        {% endfor %}
+                    </select>
+                    <a style="margin-left:10px;"
+                       href="{% url 'control_tags' %}">Управление тегами</a>
                 </div>
                 {% if todo.datecompleted is None %}
                     <button type="button" class="btn btn-info" onclick="$('#complete_back').click()">Назад</button>

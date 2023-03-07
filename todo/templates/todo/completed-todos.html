@@ -26,11 +26,12 @@
                 {% for todo in todos %}
                         <div class="card" style="margin-bottom:10px">
                              <div class="card-header">
-                                 Завершено {{ todo.datecompleted|date:'d F Y H:i' }}
+                                <h6 style="color:red;"> Завершено {{ todo.datecompleted|date:'d F Y H:i' }}</h6>
                              </div>
                             <a href="{% url 'up_date_todo' todo.id %}" class="list-group-item list-group-item-action{% if todo.important %} list-group-item-danger{% endif %}">
                             <div class="card-body">
                                 <b>{{ todo.title }}</b>
+                                {% if todo.memo %} - {{ todo.memo|truncatechars:30 }}{% endif %}
                             </div>
                              </a>
                         </div>

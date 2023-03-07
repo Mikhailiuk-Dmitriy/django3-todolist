@@ -171,6 +171,11 @@ class AddTodoView(LoginRequiredMixin, generic.CreateView):
         qs = qs.filter(user=self.request.user)
         return qs
 
+    def get_context_data(self) -> dict[str, Any]:  # type: ignore
+        context = super().get_context_data()
+        context["tags"] = Tag.objects.filter(user=self.request.user)
+        return context
+
 
 class UpDateTodoView(LoginRequiredMixin, generic.UpdateView):
     template_name = "todo/up-date-todo.html"
@@ -182,6 +187,11 @@ class UpDateTodoView(LoginRequiredMixin, generic.UpdateView):
         qs: Any = super().get_queryset()
         qs = qs.filter(user=self.request.user)
         return qs
+
+    def get_context_data(self) -> dict[str, Any]:  # type: ignore
+        context = super().get_context_data()
+        context["tags"] = Tag.objects.filter(user=self.request.user)
+        return context
 
 
 class CompletedTodoList(LoginRequiredMixin, generic.ListView):

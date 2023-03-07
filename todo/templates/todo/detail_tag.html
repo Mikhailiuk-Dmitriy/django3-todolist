@@ -12,8 +12,11 @@
                 {% for todo in todos %}
                  <div class="card" style="margin-bottom:10px">
                      <div class="card-header">
+                         {% if todo.datecompleted is not None %}
+                            <h6 style="color:red;"> Завершено {{ todo.datecompleted|date:'d F Y H:i' }}</h6>
+                         {% else %}
                             {{ todo.created }}
-
+                         {% endif %}
                         </div>
                         <a href="{% url 'up_date_todo' todo.id %}"
                    class="list-group-item list-group-item-action{% if todo.important %} list-group-item-danger{% endif %}">

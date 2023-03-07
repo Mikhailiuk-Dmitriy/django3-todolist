@@ -30,8 +30,13 @@
                 <div class="form-group">
                     <label>Теги</label>
                     <br>
-                        {{form.tag}}
-                    <a style="margin-left:10px;" href="{% url 'control_tags' %}">Управление тегами</a>
+                    <select style="width:250px; padding:5px;"  name="tag" id="id_tag" multiple="">
+                        {% for tag in tags %}
+                        <option value="{{ tag.id }}">{{ tag }}</option>
+                        {% endfor %}
+                    </select>
+                    <a style="margin-left:10px;"
+                       href="{% url 'control_tags' %}">Управление тегами</a>
                 </div>
                 <button type="submit" class="btn btn-primary">Сохранить</button>
             </form>
