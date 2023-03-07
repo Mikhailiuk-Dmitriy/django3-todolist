@@ -15,11 +15,29 @@ Installation:
 
 -download this repository
 
+-download the .env file and move it to the root of the project (file name must start with a dot)   https://drive.google.com/file/d/1IgC7SFgoQ4YiddmXs9A9zcV-XlRllq0n/view?usp=share_link
+
 -in this repository via cmd run: "poetry install"
 
 -"poetry run python manage.py migrate"
 
 -"poetry run python manage.py runserver"
+
+Main ways to work with the API:
+
+-api/v1/auth/users/  method POST user registration
+
+-auth/token/login/ method POST user authorization and receiving a token
+
+-api/v1/todolist/ method GET  returns all data 
+
+-api/v1/todolist/ method POST creates todo
+
+-api/v1/todolist/<int:pk>/ method GET  details todo
+
+-api/v1/todolist/<int:pk>/ method PUT updates todo
+
+-api/v1/todolist/<int:pk>/ method DELETE deletes todo
 
 Languages: Python, HTML, CSS.
 
