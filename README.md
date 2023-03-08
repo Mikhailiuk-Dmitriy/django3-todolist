@@ -15,7 +15,7 @@ Installation:
 
 -download this repository
 
--download the .env file and move it to the root of the project (file name must start with a dot)   https://drive.google.com/file/d/1IgC7SFgoQ4YiddmXs9A9zcV-XlRllq0n/view?usp=share_link
+-download the .env file and move it to the root of the project (file name must start with a dot)   https://cloud.mail.ru/public/1Ndk/1P9uWVMfV
 
 -in this repository via cmd run: "poetry install"
 
